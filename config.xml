@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <modules>
+        <module category="Datenaustausch" context="hs_modbusTCP_fetcher14184" id="14184" name="hs_modbusTCP_fetcher" sinternal_name="hs_modbusTCP_fetcher" external_name="ModbusTCP Fetcher (14184)" version="0.1">
+            <inputs>
+                <input type="number" const_name="switch" init_value="0">Interval timer switch - on (1) / off (0)</input>
+                <input type="number" const_name="fetch_interval" init_value="5">Interval in seconds (default: 5 secs)</input>
+                <input type="number" const_name="man_trigger" init_value="0">Manual fetch trigger - by 1</input>
+                <input type="string" const_name="modbus_slave_ip" init_value="127.0.0.1">IP of modbus server</input>
+                <input type="number" const_name="port" init_value="502">Modbus TCP Port (default: 502)</input>
+                <input type="number" const_name="slave-id" init_value="1">Modbus slave id</input>
+                <input type="number" const_name="modbus_wordorder" init_value="0">Word order: 0: LittleEndian (Modbus default); 1: BigEndian (Sunspec)</input>
+                <input type="number" const_name="modbus_byteorder" init_value="1">Byte order: 1: LittleEndian; 1: BigEndian (Modbus default)</input>
+                <!-- 1. register -->
+                <input type="number" const_name="holding_register1" init_value="-1">Reg1: holding register address in dec (-1: disabled)</input>
+                <input type="string" const_name="HR1_datatype" init_value="uint16">Reg1: Data type of register</input>
+                <input type="number" const_name="HR1_str_len" init_value="8">Reg1: string length if applicable</input>
+                <!-- 2. register -->
+                <input type="number" const_name="holding_register2" init_value="-1">Reg2: holding register address in dec (-1: disabled)</input>
+                <input type="string" const_name="HR2_datatype" init_value="uint16">Reg2: Data type of register</input>
+                <input type="number" const_name="HR2_str_len" init_value="8">Reg2: string length if applicable</input>
+                <!-- 3. register -->
+                <input type="number" const_name="holding_register3" init_value="-1">Reg3: holding register address in dec (-1: disabled)</input>
+                <input type="string" const_name="HR3_datatype" init_value="uint16">Reg3: Data type of register</input>
+                <input type="number" const_name="HR3_str_len" init_value="8">Reg3: string length if applicable</input>
+                <!-- 4. register -->
+                <input type="number" const_name="holding_register4" init_value="-1">Reg4: holding register address in dec (-1: disabled)</input>
+                <input type="string" const_name="HR4_datatype" init_value="uint16">Reg4: Data type of register</input>
+                <input type="number" const_name="HR4_str_len" init_value="8">Reg4: string length if applicable</input>
+                <!-- 5. register -->
+                <input type="number" const_name="holding_register5" init_value="-1">Reg5: holding register address in dec (-1: disabled)</input>
+                <input type="string" const_name="HR5_datatype" init_value="uint16">Reg5: Data type of register</input>
+                <input type="number" const_name="HR5_str_len" init_value="8">Reg5: string length if applicable</input>
+                <!-- 6. register -->
+                <input type="number" const_name="holding_register6" init_value="-1">Reg6: holding register address in dec (-1: disabled)</input>
+                <input type="string" const_name="HR6_datatype" init_value="uint16">Reg6: Data type of register</input>
+                <input type="number" const_name="HR6_str_len" init_value="8">Reg6: string length if applicable</input>
+                <!-- 7. register -->
+                <input type="number" const_name="holding_register7" init_value="-1">Reg7: holding register address in dec (-1: disabled)</input>
+                <input type="string" const_name="HR7_datatype" init_value="uint16">Reg7: Data type of register</input>
+                <input type="number" const_name="HR7_str_len" init_value="8">Reg7: string length if applicable</input>
+                <!-- 8. register -->
+                <input type="number" const_name="holding_register8" init_value="-1">Reg8: holding register address in dec (-1: disabled)</input>
+                <input type="string" const_name="HR8_datatype" init_value="uint16">Reg8: Data type of register</input>
+                <input type="number" const_name="HR8_str_len" init_value="8">Reg8: string length if applicable</input>
+            </inputs>
+            <outputs>
+                <output type="number" const_name="hr1_val_num" init_value="-1">Reg1 numeric (only num values)</output>
+                <output type="string" const_name="hr1_val_str" init_value="-1">Reg1 string</output>
+                <output type="number" const_name="hr2_val_num" init_value="-1">Reg2 numeric (only num values)</output>
+                <output type="string" const_name="hr2_val_str" init_value="-1">Reg2 string</output>
+                <output type="number" const_name="hr3_val_num" init_value="-1">Reg3 numeric (only num values)</output>
+                <output type="string" const_name="hr3_val_str" init_value="-1">Reg3 string</output>
+                <output type="number" const_name="hr4_val_num" init_value="-1">Reg4 numeric (only num values)</output>
+                <output type="string" const_name="hr4_val_str" init_value="-1">Reg4 string</output>
+                <output type="number" const_name="hr5_val_num" init_value="-1">Reg5 numeric (only num values)</output>
+                <output type="string" const_name="hr5_val_str" init_value="-1">Reg5 string</output>
+                <output type="number" const_name="hr6_val_num" init_value="-1">Reg6 numeric (only num values)</output>
+                <output type="string" const_name="hr6_val_str" init_value="-1">Reg6 string</output>
+                <output type="number" const_name="hr7_val_num" init_value="-1">Reg7 numeric (only num values)</output>
+                <output type="string" const_name="hr7_val_str" init_value="-1">Reg7 string</output>
+                <output type="number" const_name="hr8_val_num" init_value="-1">Reg8 numeric (only num values)</output>
+                <output type="string" const_name="hr8_val_str" init_value="-1">Reg8 string</output>
+            </outputs>
+           <remanent_variables>
+            </remanent_variables>
+            <imports>
+                <import>hsl20_3_timer</import>
+                <import>lib/pymodbus</import>
+            </imports>
+        </module>
+    </modules>
+    <logging type="None" ip="" port="" />
+</config>
