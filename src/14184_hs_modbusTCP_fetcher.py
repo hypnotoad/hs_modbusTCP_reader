@@ -184,4 +184,5 @@ class Hs_modbusTCP_fetcher14184(hsl20_3.BaseModule):
             if self._get_input_value(self.PIN_I_SWITCH) == 1:
                 self.interval.start()
         elif index == self.PIN_I_MAN_TRIGGER:
-            self.interval()
+            if self._get_input_value(self.PIN_I_MAN_TRIGGER) == 1:
+                self.on_interval()
