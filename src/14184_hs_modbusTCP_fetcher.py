@@ -4,6 +4,7 @@ import pymodbus  # To not delete this module reference!!
 from pymodbus.constants import Endian
 from pymodbus.payload import BinaryPayloadDecoder
 from pymodbus.client.sync import ModbusTcpClient
+from pymodbus.client.sync import ModbusSerialClient
 
 ##!!!!##################################################################################################
 #### Own written code can be placed above this commentblock . Do not change or delete commentblock! ####
@@ -95,9 +96,17 @@ class Hs_modbusTCP_fetcher14184(hsl20_3.BaseModule):
         unit_id = int(self._get_input_value(self.PIN_I_SLAVE_ID))
 
         try:
-            self.DEBUG.set_value("Conn IP:Port (UnitID)", ip_address + ":" + str(port) + " (" + str(unit_id) + ") ")
             if self.client is None:
-                self.client = ModbusTcpClient(ip_address, port)
+                if ip_address.lower().startswith("serial:"):
+                    serial_method = ip_address.split(':')[1]
+                    serial_speed = ip_address.split(':')[2]
+                    serial_port = ip_address.split(':')[3]
+                    self.DEBUG.set_value("Serial conn - method, speed, port, unitid",
+                                         ",".join([serial_method, str(serial_speed), serial_port, str(unit_id)]))
+                    self.client = ModbusSerialClient(method=serial_method, port=serial_port, baudrate=serial_speed)
+                else:
+                    self.DEBUG.set_value("Conn IP:Port (UnitID)", ip_address+":"+str(port)+" ("+str(unit_id)+") ")
+                    self.client = ModbusTcpClient(ip_address, port)
             if self.client.is_socket_open() is False:
                 self.client.connect()
 
@@ -120,6 +129,7 @@ class Hs_modbusTCP_fetcher14184(hsl20_3.BaseModule):
 
         except Exception as err:
             self.DEBUG.set_value("Last exception msg logged", "Message: " + err.message)
+            raise
 
     def fetch_register(self, input_num, pin_input_addr_id, pin_input_type_id, pin_input_fetch_size_id,
                        pin_output_num_id, pin_output_str_id, unit_id):
