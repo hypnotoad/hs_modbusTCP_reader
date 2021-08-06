@@ -25,47 +25,47 @@ class Hs_modbusTCP_fetcher14184(hsl20_3.BaseModule):
         self.PIN_I_OPTIONS=7
         self.PIN_I_MODBUS_WORDORDER=8
         self.PIN_I_MODBUS_BYTEORDER=9
-        self.PIN_I_HOLDING_REGISTER1=10
-        self.PIN_I_HR1_DATATYPE=11
-        self.PIN_I_HR1_MULTI_LEN=12
-        self.PIN_I_HOLDING_REGISTER2=13
-        self.PIN_I_HR2_DATATYPE=14
-        self.PIN_I_HR2_MULTI_LEN=15
-        self.PIN_I_HOLDING_REGISTER3=16
-        self.PIN_I_HR3_DATATYPE=17
-        self.PIN_I_HR3_MULTI_LEN=18
-        self.PIN_I_HOLDING_REGISTER4=19
-        self.PIN_I_HR4_DATATYPE=20
-        self.PIN_I_HR4_MULTI_LEN=21
-        self.PIN_I_HOLDING_REGISTER5=22
-        self.PIN_I_HR5_DATATYPE=23
-        self.PIN_I_HR5_MULTI_LEN=24
-        self.PIN_I_HOLDING_REGISTER6=25
-        self.PIN_I_HR6_DATATYPE=26
-        self.PIN_I_HR6_MULTI_LEN=27
-        self.PIN_I_HOLDING_REGISTER7=28
-        self.PIN_I_HR7_DATATYPE=29
-        self.PIN_I_HR7_MULTI_LEN=30
-        self.PIN_I_HOLDING_REGISTER8=31
-        self.PIN_I_HR8_DATATYPE=32
-        self.PIN_I_HR8_MULTI_LEN=33
+        self.PIN_I_REGISTER1=10
+        self.PIN_I_REG1_DATATYPE=11
+        self.PIN_I_REG1_MULTI_LEN=12
+        self.PIN_I_REGISTER2=13
+        self.PIN_I_REG2_DATATYPE=14
+        self.PIN_I_REG2_MULTI_LEN=15
+        self.PIN_I_REGISTER3=16
+        self.PIN_I_REG3_DATATYPE=17
+        self.PIN_I_REG3_MULTI_LEN=18
+        self.PIN_I_REGISTER4=19
+        self.PIN_I_REG4_DATATYPE=20
+        self.PIN_I_REG4_MULTI_LEN=21
+        self.PIN_I_REGISTER5=22
+        self.PIN_I_REG5_DATATYPE=23
+        self.PIN_I_REG5_MULTI_LEN=24
+        self.PIN_I_REGISTER6=25
+        self.PIN_I_REG6_DATATYPE=26
+        self.PIN_I_REG6_MULTI_LEN=27
+        self.PIN_I_REGISTER7=28
+        self.PIN_I_REG7_DATATYPE=29
+        self.PIN_I_REG7_MULTI_LEN=30
+        self.PIN_I_REGISTER8=31
+        self.PIN_I_REG8_DATATYPE=32
+        self.PIN_I_REG8_MULTI_LEN=33
         self.PIN_O_FETCH_OK=1
-        self.PIN_O_HR1_VAL_NUM=2
-        self.PIN_O_HR1_VAL_STR=3
-        self.PIN_O_HR2_VAL_NUM=4
-        self.PIN_O_HR2_VAL_STR=5
-        self.PIN_O_HR3_VAL_NUM=6
-        self.PIN_O_HR3_VAL_STR=7
-        self.PIN_O_HR4_VAL_NUM=8
-        self.PIN_O_HR4_VAL_STR=9
-        self.PIN_O_HR5_VAL_NUM=10
-        self.PIN_O_HR5_VAL_STR=11
-        self.PIN_O_HR6_VAL_NUM=12
-        self.PIN_O_HR6_VAL_STR=13
-        self.PIN_O_HR7_VAL_NUM=14
-        self.PIN_O_HR7_VAL_STR=15
-        self.PIN_O_HR8_VAL_NUM=16
-        self.PIN_O_HR8_VAL_STR=17
+        self.PIN_O_REG1_VAL_NUM=2
+        self.PIN_O_REG1_VAL_STR=3
+        self.PIN_O_REG2_VAL_NUM=4
+        self.PIN_O_REG2_VAL_STR=5
+        self.PIN_O_REG3_VAL_NUM=6
+        self.PIN_O_REG3_VAL_STR=7
+        self.PIN_O_REG4_VAL_NUM=8
+        self.PIN_O_REG4_VAL_STR=9
+        self.PIN_O_REG5_VAL_NUM=10
+        self.PIN_O_REG5_VAL_STR=11
+        self.PIN_O_REG6_VAL_NUM=12
+        self.PIN_O_REG6_VAL_STR=13
+        self.PIN_O_REG7_VAL_NUM=14
+        self.PIN_O_REG7_VAL_STR=15
+        self.PIN_O_REG8_VAL_NUM=16
+        self.PIN_O_REG8_VAL_STR=17
         self.FRAMEWORK._run_in_context_thread(self.on_init)
 
 ########################################################################################################
@@ -90,7 +90,8 @@ class Hs_modbusTCP_fetcher14184(hsl20_3.BaseModule):
             'string': {'size': -1, 'numeric': False, 'method': 'decode_string'}
         }
         self.options = {
-            'NoKeepAlive'
+            'NoKeepAlive',
+            'WithCoil'
         }
 
     def on_interval(self):
@@ -106,22 +107,22 @@ class Hs_modbusTCP_fetcher14184(hsl20_3.BaseModule):
             if self.client.is_socket_open() is False:
                 self.client.connect()
 
-            self.fetch_register(1, self.PIN_I_HOLDING_REGISTER1, self.PIN_I_HR1_DATATYPE, self.PIN_I_HR1_MULTI_LEN,
-                                self.PIN_O_HR1_VAL_NUM, self.PIN_O_HR1_VAL_STR, unit_id)
-            self.fetch_register(2, self.PIN_I_HOLDING_REGISTER2, self.PIN_I_HR2_DATATYPE, self.PIN_I_HR2_MULTI_LEN,
-                                self.PIN_O_HR2_VAL_NUM, self.PIN_O_HR2_VAL_STR, unit_id)
-            self.fetch_register(3, self.PIN_I_HOLDING_REGISTER3, self.PIN_I_HR3_DATATYPE, self.PIN_I_HR3_MULTI_LEN,
-                                self.PIN_O_HR3_VAL_NUM, self.PIN_O_HR3_VAL_STR, unit_id)
-            self.fetch_register(4, self.PIN_I_HOLDING_REGISTER4, self.PIN_I_HR4_DATATYPE, self.PIN_I_HR4_MULTI_LEN,
-                                self.PIN_O_HR4_VAL_NUM, self.PIN_O_HR4_VAL_STR, unit_id)
-            self.fetch_register(5, self.PIN_I_HOLDING_REGISTER5, self.PIN_I_HR5_DATATYPE, self.PIN_I_HR5_MULTI_LEN,
-                                self.PIN_O_HR5_VAL_NUM, self.PIN_O_HR5_VAL_STR, unit_id)
-            self.fetch_register(6, self.PIN_I_HOLDING_REGISTER6, self.PIN_I_HR6_DATATYPE, self.PIN_I_HR6_MULTI_LEN,
-                                self.PIN_O_HR6_VAL_NUM, self.PIN_O_HR6_VAL_STR, unit_id)
-            self.fetch_register(7, self.PIN_I_HOLDING_REGISTER7, self.PIN_I_HR7_DATATYPE, self.PIN_I_HR7_MULTI_LEN,
-                                self.PIN_O_HR7_VAL_NUM, self.PIN_O_HR7_VAL_STR, unit_id)
-            self.fetch_register(8, self.PIN_I_HOLDING_REGISTER8, self.PIN_I_HR8_DATATYPE, self.PIN_I_HR8_MULTI_LEN,
-                                self.PIN_O_HR8_VAL_NUM, self.PIN_O_HR8_VAL_STR, unit_id)
+            self.fetch_register(1, self.PIN_I_REGISTER1, self.PIN_I_REG1_DATATYPE, self.PIN_I_REG1_MULTI_LEN,
+                                self.PIN_O_REG1_VAL_NUM, self.PIN_O_REG1_VAL_STR, unit_id)
+            self.fetch_register(2, self.PIN_I_REGISTER2, self.PIN_I_REG2_DATATYPE, self.PIN_I_REG2_MULTI_LEN,
+                                self.PIN_O_REG2_VAL_NUM, self.PIN_O_REG2_VAL_STR, unit_id)
+            self.fetch_register(3, self.PIN_I_REGISTER3, self.PIN_I_REG3_DATATYPE, self.PIN_I_REG3_MULTI_LEN,
+                                self.PIN_O_REG3_VAL_NUM, self.PIN_O_REG3_VAL_STR, unit_id)
+            self.fetch_register(4, self.PIN_I_REGISTER4, self.PIN_I_REG4_DATATYPE, self.PIN_I_REG4_MULTI_LEN,
+                                self.PIN_O_REG4_VAL_NUM, self.PIN_O_REG4_VAL_STR, unit_id)
+            self.fetch_register(5, self.PIN_I_REGISTER5, self.PIN_I_REG5_DATATYPE, self.PIN_I_REG5_MULTI_LEN,
+                                self.PIN_O_REG5_VAL_NUM, self.PIN_O_REG5_VAL_STR, unit_id)
+            self.fetch_register(6, self.PIN_I_REGISTER6, self.PIN_I_REG6_DATATYPE, self.PIN_I_REG6_MULTI_LEN,
+                                self.PIN_O_REG6_VAL_NUM, self.PIN_O_REG6_VAL_STR, unit_id)
+            self.fetch_register(7, self.PIN_I_REGISTER7, self.PIN_I_REG7_DATATYPE, self.PIN_I_REG7_MULTI_LEN,
+                                self.PIN_O_REG7_VAL_NUM, self.PIN_O_REG7_VAL_STR, unit_id)
+            self.fetch_register(8, self.PIN_I_REGISTER8, self.PIN_I_REG8_DATATYPE, self.PIN_I_REG8_MULTI_LEN,
+                                self.PIN_O_REG8_VAL_NUM, self.PIN_O_REG8_VAL_STR, unit_id)
 
         except Exception as err:
             self.DEBUG.set_value("Last exception msg logged", "Message: " + err.message)
@@ -149,7 +150,22 @@ class Hs_modbusTCP_fetcher14184(hsl20_3.BaseModule):
         if reg_fetch_size == -1:  # Strings have individual length
             reg_fetch_size = self._get_input_value(multiplier_fetchsize)
 
-        result = self.client.read_holding_registers(register_addr, reg_fetch_size, unit=unit_id)
+        # If 4 digit reg: holding register, if 5 digit we use Modicon notation
+        # see https://www.csimn.com/CSI_pages/Modbus101.html
+        if not self.is_option_set('WithCoil') and register_addr <= 9999 or (40000 <= register_addr <= 49999):
+            result = self.client.read_holding_registers(register_addr % 40000, reg_fetch_size, unit=unit_id)
+        elif self.is_option_set('WithCoil') and register_addr <= 9999:
+            result = self.client.client.read_coil(register_addr, reg_fetch_size, unit=unit_id)
+        elif 20000 <= register_addr <= 29999:
+            result = self.client.client.read_discrete_inputs(register_addr % 20000, reg_fetch_size, unit=unit_id)
+        elif 30000 <= register_addr <= 39999:
+            result = self.client.client.read_input_registers(register_addr % 30000, reg_fetch_size, unit=unit_id)
+
+        if result.isError():
+            self.LOGGER.error("Unable to read Modbus register " + str(register_addr) + ": " + result)
+            self.DEBUG.set_value("Output value " + str(input_num) + " of type " + register_type_str, result)
+            return None
+
         decoder = BinaryPayloadDecoder.fromRegisters(result.registers, byteorder=self.byte_order(),
                                                      wordorder=self.word_order())
 
