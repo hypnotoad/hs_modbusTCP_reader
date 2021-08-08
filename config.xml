@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
     <modules>
-        <module category="Datenaustausch" context="hs_modbusTCP_fetcher14184" id="14184" name="hs_modbusTCP_fetcher" sinternal_name="hs_modbusTCP_fetcher" external_name="ModbusTCP Fetcher (14184)" version="0.3.0">
+        <module category="Datenaustausch" context="hs_modbusTCP_fetcher14184" id="14184" name="hs_modbusTCP_fetcher" sinternal_name="hs_modbusTCP_fetcher" external_name="ModbusTCP Fetcher (14184)" version="0.4.1">
             <inputs>
                 <input type="number" const_name="switch" init_value="0">Interval timer switch - on (1) / off (0)</input>
                 <input type="number" const_name="fetch_interval" init_value="5">Interval in seconds (default: 5 secs)</input>
@@ -10,38 +10,47 @@
                 <input type="number" const_name="port" init_value="502">Modbus TCP Port (default: 502)</input>
                 <input type="number" const_name="slave-id" init_value="1">Modbus slave id</input>
                 <input type="string" const_name="options" init_value="">Special options if needed, sep. by colon. Options: "NoKeepAlive"</input>
-                <input type="number" const_name="modbus_wordorder" init_value="0">Word order: 0: LittleEndian (Modbus default); 1: BigEndian (Sunspec)</input>
+                <input type="number" const_name="modbus_wordorder" init_value="0">Word order: 0: LittleEndian (Modbus default); 1: BigEndian</input>
                 <input type="number" const_name="modbus_byteorder" init_value="1">Byte order: 1: LittleEndian; 1: BigEndian (Modbus default)</input>
+                <input type="number" const_name="reg_offset" init_value="0">Register offset: Shifts all registers. Default 0, often -1</input>
                 <!-- 1. register -->
                 <input type="number" const_name="register1" init_value="-1">Reg1: register address in dec (-1: disabled)</input>
+                <input type="number" const_name="reg1_regtyp" init_value="3">Reg1: Type: 1=Coil, 2=Discrete, 3=Holding, 4=Input</input>
                 <input type="string" const_name="reg1_datatype" init_value="uint16">Reg1: Data type of register</input>
                 <input type="number" const_name="reg1_multi-len" init_value="1">Reg1: num: Multiplier - string: length / characters</input>
                 <!-- 2. register -->
                 <input type="number" const_name="register2" init_value="-1">Reg2: register address in dec (-1: disabled)</input>
+                <input type="number" const_name="reg2_regtyp" init_value="3">Reg2: Type: 1=Coil, 2=Discrete, 3=Holding, 4=Input</input>
                 <input type="string" const_name="reg2_datatype" init_value="uint16">Reg2: Data type of register</input>
                 <input type="number" const_name="reg2_multi-len" init_value="1">Reg2: num: Multiplier - string: length / characters</input>
                 <!-- 3. register -->
                 <input type="number" const_name="register3" init_value="-1">Reg3: register address in dec (-1: disabled)</input>
+                <input type="number" const_name="reg3_regtyp" init_value="3">Reg3: Type: 1=Coil, 2=Discrete, 3=Holding, 4=Input</input>
                 <input type="string" const_name="reg3_datatype" init_value="uint16">Reg3: Data type of register</input>
                 <input type="number" const_name="reg3_multi-len" init_value="1">Reg3: num: Multiplier - string: length / characters</input>
                 <!-- 4. register -->
                 <input type="number" const_name="register4" init_value="-1">Reg4: register address in dec (-1: disabled)</input>
+                <input type="number" const_name="reg4_regtyp" init_value="3">Reg4: Type: 1=Coil, 2=Discrete, 3=Holding, 4=Input</input>
                 <input type="string" const_name="reg4_datatype" init_value="uint16">Reg4: Data type of register</input>
                 <input type="number" const_name="reg4_multi-len" init_value="1">Reg4: num: Multiplier - string: length / characters</input>
                 <!-- 5. register -->
                 <input type="number" const_name="register5" init_value="-1">Reg5: register address in dec (-1: disabled)</input>
+                <input type="number" const_name="reg5_regtyp" init_value="3">Reg5: Type: 1=Coil, 2=Discrete, 3=Holding, 4=Input</input>
                 <input type="string" const_name="reg5_datatype" init_value="uint16">Reg5: Data type of register</input>
                 <input type="number" const_name="reg5_multi-len" init_value="1">Reg5: num: Multiplier - string: length / characters</input>
                 <!-- 6. register -->
                 <input type="number" const_name="register6" init_value="-1">Reg6: register address in dec (-1: disabled)</input>
+                <input type="number" const_name="reg6_regtyp" init_value="3">Reg6: Type: 1=Coil, 2=Discrete, 3=Holding, 4=Input</input>
                 <input type="string" const_name="reg6_datatype" init_value="uint16">Reg6: Data type of register</input>
                 <input type="number" const_name="reg6_multi-len" init_value="1">Reg6: num: Multiplier - string: length / characters</input>
                 <!-- 7. register -->
                 <input type="number" const_name="register7" init_value="-1">Reg7: register address in dec (-1: disabled)</input>
+                <input type="number" const_name="reg7_regtyp" init_value="3">Reg7: Type: 1=Coil, 2=Discrete, 3=Holding, 4=Input</input>
                 <input type="string" const_name="reg7_datatype" init_value="uint16">Reg7: Data type of register</input>
                 <input type="number" const_name="reg7_multi-len" init_value="1">Reg7: num: Multiplier - string: length / characters</input>
                 <!-- 8. register -->
                 <input type="number" const_name="register8" init_value="-1">Reg8: register address in dec (-1: disabled)</input>
+                <input type="number" const_name="reg8_regtyp" init_value="3">Reg8: Type: 1=Coil, 2=Discrete, 3=Holding, 4=Input</input>
                 <input type="string" const_name="reg8_datatype" init_value="uint16">Reg8: Data type of register</input>
                 <input type="number" const_name="reg8_multi-len" init_value="1">Reg8: num: Multiplier - string: length / characters</input>
             </inputs>
