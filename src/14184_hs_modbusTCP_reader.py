@@ -10,10 +10,10 @@ from pymodbus.client.sync import ModbusTcpClient
 ########################################################################################################
 ##** Code created by generator - DO NOT CHANGE! **##
 
-class Hs_modbusTCP_fetcher14184(hsl20_3.BaseModule):
+class Hs_modbusTCP_reader14184(hsl20_3.BaseModule):
 
     def __init__(self, homeserver_context):
-        hsl20_3.BaseModule.__init__(self, homeserver_context, "hs_modbusTCP_fetcher14184")
+        hsl20_3.BaseModule.__init__(self, homeserver_context, "hs_modbusTCP_reader14184")
         self.FRAMEWORK = self._get_framework()
         self.LOGGER = self._get_logger(hsl20_3.LOGGING_NONE,())
         self.PIN_I_SWITCH=1

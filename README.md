@@ -1,4 +1,4 @@
-# HomeServer ModbusTCP Fetcher (14184)
+# HomeServer ModbusTCP Reader (14184)
 Gira Homeserver 4 Logicmodule to poll/fetch values via Modbus TCP.
 
 ## Developer Notes
