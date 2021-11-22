@@ -131,7 +131,9 @@ class Hs_modbusTCP_reader14184(hsl20_3.BaseModule):
                                 self.PIN_I_REG7_MULTI_LEN, self.PIN_O_REG7_VAL_NUM, self.PIN_O_REG7_VAL_STR, unit_id)
             self.fetch_register(8, self.PIN_I_REGISTER8, self.PIN_I_REG8_REGTYP, self.PIN_I_REG8_DATATYPE,
                                 self.PIN_I_REG8_MULTI_LEN, self.PIN_O_REG8_VAL_NUM, self.PIN_O_REG8_VAL_STR, unit_id)
-
+        except ConnectionException as con_err:
+            self.DEBUG.set_value("Last exception msg logged", "Message: " + str(con_err))
+            self.LOGGER.warning("Unable to read modbus register: " + str(con_err))
         except Exception as err:
             self.DEBUG.set_value("Last exception msg logged", "Message: " + str(err))
             self.LOGGER.error("Unable to read modbus register: " + str(err))
