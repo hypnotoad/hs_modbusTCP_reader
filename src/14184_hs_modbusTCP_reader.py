@@ -1,5 +1,6 @@
 # coding: utf-8
 
+import time
 import pymodbus  # To not delete this module reference!!
 from pymodbus.constants import Endian
 from pymodbus.payload import BinaryPayloadDecoder
@@ -100,7 +101,7 @@ class Hs_modbusTCP_reader14184(hsl20_3.BaseModule):
             'string': {'size': -1, 'numeric': False, 'method': 'decode_string'}
         }
         self.options = {
-            'NoKeepAlive'
+            'NoKeepAlive','Sleep100ms'
         }
 
     def on_interval(self):
@@ -112,7 +113,8 @@ class Hs_modbusTCP_reader14184(hsl20_3.BaseModule):
         try:
             self.DEBUG.set_value("Conn IP:Port (UnitID)", ip_address + ":" + str(port) + " (" + str(unit_id) + ") ")
             if self.client is None:
-                self.client = ModbusTcpClient(ip_address, port)
+                self.client = ModbusTcpClient(ip_address, port, timeout=10, retry_on_empty=True, retry_on_invalid=True,
+                    reset_socket=False)
             if self.client.is_socket_open() is False:
                 self.client.connect()
 
@@ -204,6 +206,9 @@ class Hs_modbusTCP_reader14184(hsl20_3.BaseModule):
 
         self.DEBUG.set_value("Output value " + str(input_num) + " of type " + register_type_str, str(value))
         self._set_output_value(pin_output_str_id, str(value))
+
+        if self.is_option_set('Sleep100ms'): # Sleep 100ms to let slow pairs calm down
+            time.sleep(0.1)
 
     def word_order(self):
         if int(self._get_input_value(self.PIN_I_MODBUS_WORDORDER)) == 1:

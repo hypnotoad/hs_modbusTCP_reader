@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
     <modules>
-        <module category="Datenaustausch" context="hs_modbusTCP_reader14184" id="14184" name="hs_modbusTCP_reader" sinternal_name="hs_modbusTCP_reader" external_name="ModbusTCP Reader (14184)" version="0.5.1">
+        <module category="Datenaustausch" context="hs_modbusTCP_reader14184" id="14184" name="hs_modbusTCP_reader" sinternal_name="hs_modbusTCP_reader" external_name="ModbusTCP Reader (14184)" version="0.5.3">
             <inputs>
                 <input type="number" const_name="switch" init_value="0">Interval timer switch - on (1) / off (0)</input>
                 <input type="number" const_name="fetch_interval" init_value="5">Interval in seconds (default: 5 secs)</input>
@@ -9,9 +9,9 @@
                 <input type="string" const_name="modbus_slave_ip" init_value="127.0.0.1">IP of modbus server</input>
                 <input type="number" const_name="port" init_value="502">Modbus TCP Port (default: 502)</input>
                 <input type="number" const_name="slave-id" init_value="1">Modbus slave id</input>
-                <input type="string" const_name="options" init_value="">Special options if needed, sep. by colon. Options: "NoKeepAlive"</input>
+                <input type="string" const_name="options" init_value="">Special options if needed, sep. by colon. Options: NoKeepAlive,Sleep100ms</input>
                 <input type="number" const_name="modbus_wordorder" init_value="0">Word order: 0: LittleEndian (Modbus default); 1: BigEndian</input>
-                <input type="number" const_name="modbus_byteorder" init_value="1">Byte order: 1: LittleEndian; 1: BigEndian (Modbus default)</input>
+                <input type="number" const_name="modbus_byteorder" init_value="1">Byte order: 0: LittleEndian; 1: BigEndian (Modbus default)</input>
                 <input type="number" const_name="reg_offset" init_value="0">Register offset: Shifts all registers. Default 0, often -1</input>
                 <!-- 1. register -->
                 <input type="number" const_name="register1" init_value="-1">Reg1: register address in dec (-1: disabled)</input>
