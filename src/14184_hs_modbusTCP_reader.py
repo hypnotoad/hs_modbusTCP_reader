@@ -101,7 +101,7 @@ class Hs_modbusTCP_reader14184(hsl20_3.BaseModule):
             'string': {'size': -1, 'numeric': False, 'method': 'decode_string'}
         }
         self.options = {
-            'NoKeepAlive','Sleep100ms'
+            'NoKeepAlive', 'Sleep100ms', 'ReconnectAfterEachRead'
         }
 
     def on_interval(self):
@@ -115,8 +115,6 @@ class Hs_modbusTCP_reader14184(hsl20_3.BaseModule):
             if self.client is None:
                 self.client = ModbusTcpClient(ip_address, port, timeout=10, retry_on_empty=True, retry_on_invalid=True,
                     reset_socket=False)
-            if self.client.is_socket_open() is False:
-                self.client.connect()
 
             self.fetch_register(1, self.PIN_I_REGISTER1, self.PIN_I_REG1_REGTYP, self.PIN_I_REG1_DATATYPE,
                                 self.PIN_I_REG1_MULTI_LEN, self.PIN_O_REG1_VAL_NUM, self.PIN_O_REG1_VAL_STR, unit_id)
@@ -138,8 +136,8 @@ class Hs_modbusTCP_reader14184(hsl20_3.BaseModule):
             self.DEBUG.set_value("Last exception msg logged", "Message: " + str(con_err))
             self.LOGGER.warning("Unable to read modbus register: " + str(con_err))
         except Exception as err:
-            self.DEBUG.set_value("Last exception msg logged", "Message: " + str(err))
-            self.LOGGER.error("Unable to read modbus register: " + str(err))
+            self.DEBUG.set_value("Last perm exception msg logged", "Message: " + str(err))
+            self.LOGGER.error("Unable to read modbus register. Perm error: " + str(err))
             raise
         finally:
             if self.is_option_set('NoKeepAlive'):
@@ -150,65 +148,71 @@ class Hs_modbusTCP_reader14184(hsl20_3.BaseModule):
     def fetch_register(self, input_num, input_addr_id, input_reg_read_type, input_reg_datatype, multiplier_fetchsize,
                        pin_output_num_id, pin_output_str_id, unit_id):
 
-        # Get register address and apply offset
-        register_addr = int(self._get_input_value(input_addr_id))
-        if register_addr == -1:
-            return None
+        self.client.connect()
 
-        register_offset = int(self._get_input_value(self.PIN_I_REG_OFFSET))
-        register_addr += register_offset
+        try:
+            # Get register address and apply offset
+            register_addr = int(self._get_input_value(input_addr_id))
+            if register_addr == -1:
+                return None
 
-        if not 0 <= register_addr <= 65535:  # Skip: Neg. values skips register execution
-            self.LOGGER.warning("Modbus register out of bounds: " + str(register_addr))
-            return None
+            register_offset = int(self._get_input_value(self.PIN_I_REG_OFFSET))
+            register_addr += register_offset
 
-        register_read_type = self._get_input_value(input_reg_read_type)
-        register_type_str = self._get_input_value(input_reg_datatype)
-        register_settings = self.data_types.get(register_type_str)
-        if register_settings is None:  # No matching type entry found. lets skip over
-            self.DEBUG.set_value("No matching data type found: ", register_type_str)
-            return None
+            if not 0 <= register_addr <= 65535:  # Skip: Neg. values skips register execution
+                self.LOGGER.warning("Modbus register out of bounds: " + str(register_addr))
+                return None
 
-        reg_fetch_size = int(register_settings.get('size'))
-        if reg_fetch_size == -1:  # Strings have individual length
-            reg_fetch_size = self._get_input_value(multiplier_fetchsize)
+            register_read_type = self._get_input_value(input_reg_read_type)
+            register_type_str = self._get_input_value(input_reg_datatype)
+            register_settings = self.data_types.get(register_type_str)
+            if register_settings is None:  # No matching type entry found. lets skip over
+                self.DEBUG.set_value("No matching data type found: ", register_type_str)
+                return None
 
-        if register_read_type == 1:
-            result = self.client.read_coil(register_addr, reg_fetch_size, unit=unit_id)
-        elif register_read_type == 2:
-            result = self.client.read_discrete_inputs(register_addr, reg_fetch_size, unit=unit_id)
-        elif register_read_type == 3:
-            result = self.client.read_holding_registers(register_addr, reg_fetch_size, unit=unit_id)
-        elif register_read_type == 4:
-            result = self.client.read_input_registers(register_addr, reg_fetch_size, unit=unit_id)
-        else:
-            self.LOGGER.error("Unknown Read type " + register_read_type + " for register " + register_addr)
-            return None
+            reg_fetch_size = int(register_settings.get('size'))
+            if reg_fetch_size == -1:  # Strings have individual length
+                reg_fetch_size = self._get_input_value(multiplier_fetchsize)
 
-        if result.isError():
-            self.LOGGER.error("Unable to read Modbus register " + str(register_addr) + ": " + str(result))
-            self.DEBUG.set_value("Output value " + str(input_num) + " with address " + str(register_addr)
-                                 + " of type " + register_type_str, str(result))
-            return None
+            if register_read_type == 1:
+                result = self.client.read_coil(register_addr, reg_fetch_size, unit=unit_id)
+            elif register_read_type == 2:
+                result = self.client.read_discrete_inputs(register_addr, reg_fetch_size, unit=unit_id)
+            elif register_read_type == 3:
+                result = self.client.read_holding_registers(register_addr, reg_fetch_size, unit=unit_id)
+            elif register_read_type == 4:
+                result = self.client.read_input_registers(register_addr, reg_fetch_size, unit=unit_id)
+            else:
+                self.LOGGER.error("Unknown Read type " + register_read_type + " for register " + register_addr)
+                return None
 
-        decoder = BinaryPayloadDecoder.fromRegisters(result.registers, byteorder=self.byte_order(),
-                                                     wordorder=self.word_order())
+            if result.isError():
+                self.LOGGER.error("Unable to read Modbus register " + str(register_addr) + ": " + str(result))
+                self.DEBUG.set_value("Output value " + str(input_num) + " with address " + str(register_addr)
+                                     + " of type " + register_type_str, str(result))
+                return None
 
-        # Fetch values. Num-Values written in num and str output, Strings only as in str output.
-        if register_settings.get('numeric') is True:
-            value = getattr(decoder, register_settings.get('method'))()
-            value *= self._get_input_value(multiplier_fetchsize)
-            self._set_output_value(pin_output_num_id, value)
-        else:
-            # Strings must fetched with individual length
-            value = getattr(decoder, register_settings.get('method'))(reg_fetch_size)
-            value = value.replace('\x00', '')  # Remove null bytes
+            decoder = BinaryPayloadDecoder.fromRegisters(result.registers, byteorder=self.byte_order(),
+                                                         wordorder=self.word_order())
 
-        self.DEBUG.set_value("Output value " + str(input_num) + " of type " + register_type_str, str(value))
-        self._set_output_value(pin_output_str_id, str(value))
+            # Fetch values. Num-Values written in num and str output, Strings only as in str output.
+            if register_settings.get('numeric') is True:
+                value = getattr(decoder, register_settings.get('method'))()
+                value *= self._get_input_value(multiplier_fetchsize)
+                self._set_output_value(pin_output_num_id, value)
+            else:
+                # Strings must fetched with individual length
+                value = getattr(decoder, register_settings.get('method'))(reg_fetch_size)
+                value = value.replace('\x00', '')  # Remove null bytes
 
-        if self.is_option_set('Sleep100ms'): # Sleep 100ms to let slow pairs calm down
-            time.sleep(0.1)
+            self.DEBUG.set_value("Output value " + str(input_num) + " of type " + register_type_str, str(value))
+            self._set_output_value(pin_output_str_id, str(value))
+
+            if self.is_option_set('Sleep100ms'):  # Sleep 100ms to let slow pairs calm down
+                time.sleep(0.1)
+        finally:
+            if self.is_option_set('ReconnectAfterEachRead'):
+                self.client.close()
 
     def word_order(self):
         if int(self._get_input_value(self.PIN_I_MODBUS_WORDORDER)) == 1:
