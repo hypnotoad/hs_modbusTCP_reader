@@ -175,7 +175,7 @@ class Hs_modbusTCP_reader14184(hsl20_3.BaseModule):
                 reg_fetch_size = self._get_input_value(multiplier_fetchsize)
 
             if register_read_type == 1:
-                result = self.client.read_coil(register_addr, reg_fetch_size, unit=unit_id)
+                result = self.client.read_coils(register_addr, unit=unit_id)
             elif register_read_type == 2:
                 result = self.client.read_discrete_inputs(register_addr, reg_fetch_size, unit=unit_id)
             elif register_read_type == 3:
@@ -192,11 +192,16 @@ class Hs_modbusTCP_reader14184(hsl20_3.BaseModule):
                                      + " of type " + register_type_str, str(result))
                 return None
 
-            decoder = BinaryPayloadDecoder.fromRegisters(result.registers, byteorder=self.byte_order(),
+            if register_read_type != 1:
+                decoder = BinaryPayloadDecoder.fromRegisters(result.registers, byteorder=self.byte_order(),
                                                          wordorder=self.word_order())
 
-            # Fetch values. Num-Values written in num and str output, Strings only as in str output.
-            if register_settings.get('numeric') is True:
+            if register_read_type == 1:
+                # fetch coils (true/false)
+                value = result.bits[0]
+                self._set_output_value(pin_output_num_id, int(value))
+            elif register_settings.get('numeric') is True:
+                # Fetch values. Num-Values written in num and str output, Strings only as in str output.
                 value = getattr(decoder, register_settings.get('method'))()
                 value *= self._get_input_value(multiplier_fetchsize)
                 self._set_output_value(pin_output_num_id, value)
